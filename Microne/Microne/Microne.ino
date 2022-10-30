@@ -16,9 +16,9 @@ enum
 
 enum
 {
-    ENCODER_A_PIN   = 2,
-    ENCODER_B_PIN   = 4,
-    ENCODER_BUTTON  = 3,
+  ENCODER_A_PIN   = 2,
+  ENCODER_B_PIN   = 4,
+  ENCODER_BUTTON  = 3,
 };
 
 enum
@@ -50,17 +50,13 @@ void setup() {
     Serial.println("Unable to initialize OLED");
     while (1) yield();
   }
-
-  display.display(); // show splashscreen
   delay(1000);
   display.clearDisplay();   // clears the screen and buffer
-
-  display.drawBitmap(4,4,heat_on, 16, 23, BLACK, WHITE);
   display.display();
 }
 
 void loop() {
-  static bool refresh = false;
+  static bool refresh = true;
   static uint8_t cursor = 0;
   static bool function_array[MAX_IMGS] = {0};
 
@@ -76,7 +72,7 @@ void loop() {
     
     case 1:
       Serial.println("->");
-      if (cursor < MAX_IMGS)
+      if (cursor < MAX_IMGS - 1)
         cursor++;
       delay(500);
       refresh = true;
@@ -100,8 +96,6 @@ void loop() {
 
 static void refresh_oled(bool *funcions, uint8_t cursor)
 {
-  static uint8_t x = X_OFFSET;
-
   display.clearDisplay();   // clears the screen and buffer
 
   for (int i = 0; i < MAX_IMGS; i++)
@@ -113,6 +107,6 @@ static void refresh_oled(bool *funcions, uint8_t cursor)
                         BLACK, WHITE);
   }
 
-  display.drawRect(x + (SINGLE_IMG_WIDTH + X_SPACING) * cursor, 32 - BOTTOM_OFFSET, SINGLE_IMG_WIDTH, 2, WHITE);
+  display.drawRect(X_OFFSET + (SINGLE_IMG_WIDTH + X_SPACING) * cursor, 32 - BOTTOM_OFFSET, SINGLE_IMG_WIDTH, 2, WHITE);
   display.display();
 }
