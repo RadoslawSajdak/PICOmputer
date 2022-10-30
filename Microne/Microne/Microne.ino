@@ -12,15 +12,29 @@ enum
 static Encoder encoder((int)ENCODER_A_PIN, (int)ENCODER_B_PIN, (int)ENCODER_BUTTON);
 
 void setup() {
+  Serial.begin(115200);
   pinMode(LED_BUILTIN, OUTPUT);
   encoder.init();
-  // TCCR1A = 0;
-  // TCCR1B = (1<<CS12) | (1<<WGM12);
-  // OCR1A = 31249;
-  // TIMSK1 = (1<<OCIE1A);
 }
 
 void loop() {
-  encoder.get_button_pressed();
+  switch (encoder.get_direction())
+  {
+    case -1:
+      Serial.println("<-");
+      delay(500);
+      break;
+    
+    case 1:
+      Serial.println("->");
+      delay(500);
+      break;
+  }
+
+  if (encoder.get_button_pressed())
+  {
+    Serial.println("O");
+    delay(500);
+  }
 }
 
